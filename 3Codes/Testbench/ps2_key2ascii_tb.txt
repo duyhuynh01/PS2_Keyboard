@@ -1,0 +1,32 @@
+module key2ascii_tb;
+
+	// Inputs
+	reg letter_case;
+	reg [7:0] scan_code;
+
+	// Outputs
+	wire [7:0] ascii_code;
+
+	// Instantiate the Unit Under Test (UUT)
+	key2ascii uut (
+		.letter_case(letter_case), 
+		.scan_code(scan_code), 
+		.ascii_code(ascii_code)
+	);
+
+	initial begin
+		letter_case = 1;
+		scan_code = 8'h33; #20;		//H
+		
+		letter_case = 0;
+		scan_code = 8'h24; #20;		//e
+		scan_code = 8'h4b; #20;		//l
+		scan_code = 8'h4b; #20;		//l
+		scan_code = 8'h44; #20;		//o
+		
+		letter_case = 1;
+		scan_code = 8'h16;			//!
+		#20 $finish;
+	end
+      
+endmodule

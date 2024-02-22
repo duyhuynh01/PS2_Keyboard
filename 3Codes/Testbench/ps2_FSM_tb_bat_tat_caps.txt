@@ -1,0 +1,66 @@
+module ps2_FSM_tb1;
+
+	// Inputs
+	reg clk;
+	reg reset;
+	reg [7:0] scan_out;
+	reg scan_done_tick;
+
+	// Outputs
+	wire got_code_tick;
+	wire letter_case;
+
+	// Instantiate the Unit Under Test (UUT)
+	ps2_FSM uut (
+		.clk(clk), 
+		.reset(reset), 
+		.scan_out(scan_out), 
+		.scan_done_tick(scan_done_tick), 
+		.got_code_tick(got_code_tick), 
+		.letter_case(letter_case)
+	);
+	integer i;
+	initial begin
+		// Initialize Inputs
+		clk = 0;
+		scan_out = 0;
+		reset = 1'b0;#1;
+		reset = 1'b1;#1;
+		reset = 1'b0;
+		i=10;
+		#8
+		
+		forever 		 #1 clk = ~clk;
+		end
+	
+		 always @(posedge clk) begin
+		 i = i+1;
+		 if (i==20) begin scan_done_tick = 1; i=0; end
+		 else scan_done_tick = 0;
+		 end
+		 
+		
+		
+			initial begin
+		// Initialize Inputs
+		scan_out = 0; #10;
+		
+		//bat caps, bam A, tat caps
+		
+       scan_out = 8'h58; #40;
+		 scan_out = 8'hf0; #40;
+		 scan_out = 8'h58; #40;
+		 
+		 scan_out = 8'h1c; #40;
+		 scan_out = 8'hf0; #40;
+		 scan_out = 8'h1c; #40;
+		 
+		 scan_out = 8'h58; #40;
+		 scan_out = 8'hf0; #40;
+		 scan_out = 8'h58; #40;
+		 
+
+ 
+	end
+      
+endmodule

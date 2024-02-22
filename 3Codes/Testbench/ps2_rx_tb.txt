@@ -1,0 +1,65 @@
+module ps2_rx_tb;
+
+	// Inputs
+	reg clk;
+	reg reset;
+	reg ps2d;
+	reg ps2c;
+	reg rx_en;
+
+	// Outputs
+	wire rx_done_tick;
+	wire [7:0] rx_data;
+
+	// Instantiate the Unit Under Test (UUT)
+	ps2_rx uut (
+		.clk(clk), 
+		.reset(reset), 
+		.ps2d(ps2d), 
+		.ps2c(ps2c), 
+		.rx_en(rx_en), 
+		.rx_done_tick(rx_done_tick), 
+		.rx_data(rx_data)
+	);
+
+	initial begin
+		// Initialize Inputs
+		clk = 0;
+		
+		rx_en = 1;
+		reset = 1'b0;#1;
+		reset = 1'b1;#1;
+		reset = 1'b0;
+		#8
+		
+		forever 		 #1 clk = ~clk;
+		end
+	initial begin
+		ps2c = 0; #10
+		forever      #20 ps2c = ~ps2c;
+		end
+		
+		//data
+	initial begin	
+		ps2d = 1; #30;
+		
+		ps2d = 0; #40; //start bit
+		
+		ps2d = 1; #40;	//data bit  01011001
+		ps2d = 0; #40;	//truyen trong so thap trc
+		ps2d = 0; #40;
+		ps2d = 1; #40;
+		ps2d = 1; #40;
+		ps2d = 0; #40;
+		ps2d = 1; #40;
+		ps2d = 0; #40;
+		
+		
+		ps2d = 1; #40;  //parity bit
+		
+		ps2d = 1; #100 $finish;  //end bit
+		
+		end
+		      
+
+endmodule
